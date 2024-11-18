@@ -13,6 +13,10 @@ import Home from './pages/Home';
 import Practice from './pages/Practice';
 import Learning from './pages/Learning';
 import Profile from './pages/Profile';
+import Community from './pages/Community';
+import Subscription from './pages/Subscription';
+import About from './pages/About';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -33,7 +37,11 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/practice" element={<Practice />} />
               <Route path="/learning" element={<Learning />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/subscription" element={<Subscription />} />
+              <Route path="/about" element={<About />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </Box>
           <Footer />

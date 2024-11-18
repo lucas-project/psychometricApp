@@ -22,10 +22,11 @@ import {
     Menu as MenuIcon,
     Search as SearchIcon,
     Person as PersonIcon,
-    ShoppingCart as CartIcon,
-    School as SchoolIcon,
     Psychology as PsychologyIcon,
-    LibraryBooks as LibraryIcon
+    LibraryBooks as LibraryIcon,
+    People as CommunityIcon,
+    Stars as SubscriptionIcon,
+    Info as AboutIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -69,6 +70,14 @@ const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
+    const navItems = [
+        { title: 'Practice', icon: <PsychologyIcon />, path: '/practice' },
+        { title: 'Learning', icon: <LibraryIcon />, path: '/learning' },
+        { title: 'Community', icon: <CommunityIcon />, path: '/community' },
+        { title: 'Subscription', icon: <SubscriptionIcon />, path: '/subscription' },
+        { title: 'About', icon: <AboutIcon />, path: '/about' }
+    ];
+
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -110,21 +119,29 @@ const Navbar = () => {
                             PsychPrep
                         </Typography>
 
-                        <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
-                            <Button 
-                                color="inherit" 
-                                onClick={() => navigate('/practice')}
-                                startIcon={<PsychologyIcon />}
-                            >
-                                Practice
-                            </Button>
-                            <Button 
-                                color="inherit" 
-                                onClick={() => navigate('/learning')}
-                                startIcon={<LibraryIcon />}
-                            >
-                                Learning
-                            </Button>
+                        {/* Desktop Navigation */}
+                        <Box sx={{ 
+                            display: { xs: 'none', md: 'flex' }, 
+                            flexGrow: 1,
+                            gap: 2 
+                        }}>
+                            {navItems.map((item) => (
+                                <Button 
+                                    key={item.title}
+                                    color="inherit" 
+                                    onClick={() => navigate(item.path)}
+                                    startIcon={item.icon}
+                                    sx={{ 
+                                        textTransform: 'none',
+                                        fontWeight: 500,
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                                        }
+                                    }}
+                                >
+                                    {item.title}
+                                </Button>
+                            ))}
                         </Box>
 
                         <SearchWrapper>
@@ -155,20 +172,23 @@ const Navbar = () => {
                 open={mobileMenuOpen}
                 onClose={handleMobileMenuToggle}
             >
-                <Box sx={{ width: 250 }}>
+                <Box sx={{ width: 250, pt: 2 }}>
                     <List>
-                        <ListItem button onClick={() => { navigate('/practice'); handleMobileMenuToggle(); }}>
-                            <ListItemIcon>
-                                <PsychologyIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Practice" />
-                        </ListItem>
-                        <ListItem button onClick={() => { navigate('/learning'); handleMobileMenuToggle(); }}>
-                            <ListItemIcon>
-                                <LibraryIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Learning" />
-                        </ListItem>
+                        {navItems.map((item) => (
+                            <ListItem 
+                                key={item.title}
+                                button 
+                                onClick={() => { 
+                                    navigate(item.path); 
+                                    handleMobileMenuToggle(); 
+                                }}
+                            >
+                                <ListItemIcon>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={item.title} />
+                            </ListItem>
+                        ))}
                     </List>
                 </Box>
             </Drawer>
@@ -178,9 +198,16 @@ const Navbar = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
+                PaperProps={{
+                    elevation: 3,
+                    sx: { mt: 1 }
+                }}
             >
                 <MenuItem onClick={() => { navigate('/profile'); handleMenuClose(); }}>
                     My Profile
+                </MenuItem>
+                <MenuItem onClick={() => { navigate('/settings'); handleMenuClose(); }}>
+                    Settings
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
             </Menu>
